@@ -2,7 +2,12 @@ from collections import defaultdict
 import pickle
 import string
 import re
-from lxml import etree
+
+def get_prior (phrase):
+    n_gram_service_url = 'http://web-ngram.research.microsoft.com/rest/lookup.svc/bing-body/jun09/3/jp?u=985fcdfc-9d64-4d03-b650-aabc17f1ea1e'
+    prob = urllib2.urlopen (urllib2.Request (n_gram_service_url,
+                                             phrase)).read()
+    return float(prob.strip())
 
 def getcounts(corp,dictwords,k,picklename):
     words = corp.read().translate(string.maketrans('',''),string.punctuation).split()

@@ -5,9 +5,8 @@ import pickle
 import string
 import re
 
-st = POSTagger('/home/chinmay/scratch/stanford-postagger-full-2013-06-20/models/english-left3words-distsim.tagger',
-        '/home/chinmay/scratch/stanford-postagger-full-2013-06-20/stanford-postagger.jar')
-
+st = POSTagger( '/home/akhilesh/Desktop/NLP/Assignments/nlp/stanford-postagger-full-2013-06-20/models/english-left3words-distsim.tagger',
+        '/home/akhilesh/Desktop/NLP/Assignments/nlp/stanford-postagger-full-2013-06-20/stanford-postagger-3.2.0.jar')
 def getcounts(corpname,data=defaultdict(int)):
     f=open(corpname)
     text = f.read().lower()
@@ -43,3 +42,18 @@ def choose(leftcont,confusion,rightcont,data):
             print trigram,sc
             scores[k] *= (sc + 1)
     return scores
+
+
+
+def getcounts_tagged(corpname,data=defaultdict(int)):
+    f=open(corpname)
+    for line in f:
+        sent = [x.split('_') for x in line.strip().split()]
+        for i in xrange(len(sent)-2):
+            data[( sent[i][1],sent[i+1][1],sent[i+2][1] )] += 1
+
+            data[( sent[i][0],sent[i+1][1],sent[i+2][1] )] += 1
+            data[( sent[i][1],sent[i+1][0],sent[i+2][1] )] += 1
+            data[( sent[i][1],sent[i+1][1],sent[i+2][0] )] += 1
+
+    return data
