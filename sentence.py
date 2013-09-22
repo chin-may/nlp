@@ -24,6 +24,7 @@ if __name__ == "__main__":
             break
         if num == '1':
             i = str(raw_input("Enter the word : "))
+            i = i.lower()
             edit_0 = [];
             edit_1 = [];
             edit_2 = [];
@@ -47,6 +48,7 @@ if __name__ == "__main__":
         
         if num == '2' or num == '3':
             i = str(raw_input("Enter the sentence : "))
+            i = i.lower()
             log_prob_ngrams = []
             words = i.split()
             for j in xrange(len(words)):
@@ -77,6 +79,8 @@ if __name__ == "__main__":
                     weight_post = 0.000005
                     weight_ngrams = 0.5
                     for k in xrange(len(edit_1)):
-                        final_scores.append(weight_post*log_score_post[k] + weight_ngrams*log_prob_ngrams[k] + math.log(score_post[k]))
+                        final_scores.append(weight_post*log_score_post[k] +
+                                weight_ngrams*log_prob_ngrams[k] +
+                                math.log(score_edits[k]))
                         print str(edit_1[k]) + ' --- ' + str(final_scores[k])
                     
