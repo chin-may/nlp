@@ -137,8 +137,6 @@ class Pdist(dict):
             self[key] = self.get(key, 0) + int(count)
         self.N = float(N or sum(self.itervalues()))
         self.missingfn = missingfn or (lambda k, N: 1./N)
-        print self.N
-        print count
     def __call__(self, key): 
         if key in self: return self[key]/self.N  
         else: return self.missingfn(key, self.N)
@@ -323,41 +321,4 @@ def timeof(fn, *args):
     print "time: ", (time.time() - t)
     return res
 
-if __name__ == "__main__":
-    print damerau_levenshtein_distance('abc', 'cba')
-
-    tree = BKTree(damerau_levenshtein_distance,
-                  dict_words('/usr/share/dict/american-english'))
-    vocabulary = []
-    iterator = dict_words('/usr/share/dict/american-english')
-    for i in iterator:
-        vocabulary.append(i)
-    
-    dist = 2
-    while True:
-        print "Press 0 to exit"
-        i = str(raw_input("Please enter the word : "))
-        if i == '0':
-            break
-        edit_0 = [];
-        edit_1 = [];
-        edit_2 = [];
-        w = set(tree.query(i, dist)) - set([i]) #Candidates!
-        max_val = 0;
-        max_candidate = 0
-        for pair in w:
-            print i + " : " + pair[1]
-            if pair[0] == 0:
-                edit_0.append(pair[1])
-            elif pair[0] == 1:
-                edit_1.append(pair[1])
-            else: 
-                edit_2.append(pair[1])
-            ed = get_edits(i, pair[1])
-            if(Pedit(ed) > max_val):
-                max_val = Pedit(ed)
-                max_candidate = pair[1]
-        print "The most likely replacement for " + i + " is : " + str(max_candidate)    
-        #print edit_0
-        #print edit_1
-        #print edit_2
+        

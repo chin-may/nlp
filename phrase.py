@@ -2,6 +2,7 @@ from collections import defaultdict
 import pickle
 import string
 import re
+import urllib2
 
 def get_prior (phrase):
     n_gram_service_url = 'http://web-ngram.research.microsoft.com/rest/lookup.svc/bing-body/jun09/3/jp?u=985fcdfc-9d64-4d03-b650-aabc17f1ea1e'
@@ -9,25 +10,25 @@ def get_prior (phrase):
                                              phrase)).read()
     return float(prob.strip())
 
-def getcounts(corp,dictwords,k,picklename):
-    words = corp.read().translate(string.maketrans('',''),string.punctuation).split()
-    #data = pickle.load(open(picklename,'rb'))
-    data = defaultdict(int)
-    #pickle.dump(data, open(picklename+'_old','wb'))
-    for i in xrange(len(words) - k):
-        word = words[i].lower()
-        if word not in dictwords:
-            continue
-        for j in xrange(k):
-            contextword = words[i+j+1].lower()
-            if contextword not in dictwords:
-                continue
-            data[(max(word,contextword), min(word,contextword))] += 1
-    pickle.dump(data, open(picklename,'wb'))
-    return data
+#def getcounts(corp,dictwords,k,picklename):
+#    words = corp.read().translate(string.maketrans('',''),string.punctuation).split()
+#    #data = pickle.load(open(picklename,'rb'))
+#    data = defaultdict(int)
+#    #pickle.dump(data, open(picklename+'_old','wb'))
+#    for i in xrange(len(words) - k):
+#        word = words[i].lower()
+#        if word not in dictwords:
+#            continue
+#        for j in xrange(k):
+#            contextword = words[i+j+1].lower()
+#            if contextword not in dictwords:
+#                continue
+#            data[(max(word,contextword), min(word,contextword))] += 1
+#    pickle.dump(data, open(picklename,'wb'))
+#    return data
 
-f = open('/usr/share/dict/cracklib-small')
-dct = set(f.read().lower().split())
+#f = open('/usr/share/dict/cracklib-small')
+#dct = set(f.read().lower().split())
 
 def choose(confusion, context,data):
     scores = [0]*len(confusion)
