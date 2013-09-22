@@ -138,7 +138,7 @@ class Pdist(dict):
         self.N = float(N or sum(self.itervalues()))
         self.missingfn = missingfn or (lambda k, N: 1./N)
     def __call__(self, key): 
-        if key in self: return self[key]/float(get_count_all(key))  
+        if key in self: return self[key]/float(self.get_count_all(key))  
         else: return self.missingfn(key, self.N)
         
     def get_count_all(self, key):
@@ -148,11 +148,13 @@ class Pdist(dict):
         count = 0
         alphabet = 'abcdefghijklmnopqrstuvwxyz'
         for letter1 in alphabet:
-            count+= self[letter1 + '|' + correction]
+            if (letter1 + '|' + correction) in self:
+                count+= self[letter1 + '|' + correction]
         
         for letter1 in alphabet:
             for letter2 in alphabet:
-                count+= self[letter1 + '|' + correction]
+                if (letter1 + '|' + correction) in self:
+                    count+= self[letter1+letter2 + '|' + correction]
         
         return count
     
