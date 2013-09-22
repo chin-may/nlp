@@ -5,12 +5,12 @@ import pickle
 import string
 import re
 
-#st = POSTagger( '/home/akhilesh/Desktop/NLP/Assignments/nlp/stanford-postagger-full-2013-06-20/models/english-left3words-distsim.tagger',
-        #'/home/akhilesh/Desktop/NLP/Assignments/nlp/stanford-postagger-full-2013-06-20/stanford-postagger-3.2.0.jar')
+st = POSTagger( '/home/akhilesh/Desktop/NLP/Assignments/nlp/stanford-postagger-full-2013-06-20/models/english-left3words-distsim.tagger',
+        '/home/akhilesh/Desktop/NLP/Assignments/nlp/stanford-postagger-full-2013-06-20/stanford-postagger-3.2.0.jar')
 
-st = POSTagger(
-'/home/chinmay/scratch/stanford-postagger-full-2013-06-20/models/english-left3words-distsim.tagger',
-'/home/chinmay/scratch/stanford-postagger-full-2013-06-20/stanford-postagger-3.2.0.jar')
+#st = POSTagger(
+#'/home/chinmay/scratch/stanford-postagger-full-2013-06-20/models/english-left3words-distsim.tagger',
+#'/home/chinmay/scratch/stanford-postagger-full-2013-06-20/stanford-postagger-3.2.0.jar')
 
 def getcounts(corpname,data=defaultdict(int)):
     f=open(corpname)
@@ -44,8 +44,11 @@ def choose(leftcont,confusion,rightcont,data):
         for j in xrange(len(sent)-2):
             trigram = (sent[j],sent[j+1],sent[j+2])
             sc = data[trigram]
-            print trigram,sc
             scores[k] *= (sc + 1)
+        for j in xrange(1,len(sent)-2):
+            bigram = (sent[j],sent[j+1])
+            sc = data[bigram]
+            scores[k] /= float(sc+1)
     return scores
 
 
