@@ -141,20 +141,20 @@ class Pdist(dict):
         if key in self: return self[key]/float(get_count_all(key))  
         else: return self.missingfn(key, self.N)
         
-def get_count_all(key):
-    splitted = key.split('|')
-    typo = splitted[0]
-    correction = splitted[1]
-    count = 0
-    alphabet = 'abcdefghijklmnopqrstuvwxyz'
-    for letter1 in alphabet:
-        count+= self[letter1 + '|' + correction]
-    
-    for letter1 in alphabet:
-        for letter2 in alphabet:
+    def get_count_all(self, key):
+        splitted = key.split('|')
+        typo = splitted[0]
+        correction = splitted[1]
+        count = 0
+        alphabet = 'abcdefghijklmnopqrstuvwxyz'
+        for letter1 in alphabet:
             count+= self[letter1 + '|' + correction]
-    
-    return count
+        
+        for letter1 in alphabet:
+            for letter2 in alphabet:
+                count+= self[letter1 + '|' + correction]
+        
+        return count
     
         
 def datafile(name, sep='\t'):
@@ -170,10 +170,11 @@ N = 1024908267229 ## Number of tokens
 
 def Pedit(edit):
     "The probability of an edit; can be '' or 'a|b' or 'a|b+c|d'." 
-    if edit == '': return (1. - p_spell_error) 
+    if edit == '': return (1. - p_spell_error1) 
     return p_spell_error*product(P1edit(e) for e in edit.split('+')) 
 
-p_spell_error = 1./20. 
+p_spell_error1 = 1./20. 
+p_spell_error = 1
 
 P1edit = Pdist(datafile('count_1edit.txt')) ## Probabilities of single edits 
 

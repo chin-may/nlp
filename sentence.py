@@ -3,7 +3,7 @@ import phrase
 import math
 import ngram_pos
 import urllib2
-
+import re
 if __name__ == "__main__":
     tree = bktree.BKTree(bktree.damerau_levenshtein_distance,
                   bktree.dict_words('/usr/share/dict/american-english'))
@@ -25,6 +25,7 @@ if __name__ == "__main__":
         if num == '1':
             i = str(raw_input("Enter the word : "))
             i = i.lower()
+            i = re.sub('[.,"<>?/\|{~`]', ' ', i)
             edit_0 = [];
             edit_1 = [];
             edit_2 = [];
@@ -49,6 +50,7 @@ if __name__ == "__main__":
         if num == '2' or num == '3':
             i = str(raw_input("Enter the sentence : "))
             i = i.lower()
+            i = re.sub('[.,"<>?/\|{~`]', ' ', i)
             log_prob_ngrams = []
             words = i.split()
             for j in xrange(len(words)):
@@ -76,11 +78,11 @@ if __name__ == "__main__":
                     log_score_post = [math.log(score) for score in score_post]
                     log_prob_ngrams = [phrase.get_prior(' '.join(words[:j-1])+' '+ candidate + ' ' + ' '.join(words[j+1:])) for candidate in edit_1 ]
                     final_scores = []
-                    weight_post = 0#.00000005
-                    weight_ngrams = 1
+                    weight_post = 0.25
+                    weight_ngrams = 0.75
                     for k in xrange(len(edit_1)):
                         final_scores.append(weight_post*log_score_post[k] +
                                 weight_ngrams*log_prob_ngrams[k] +
-                                0.1*math.log(score_edits[k]))
+                                math.log(score_edits[k]))
                         print str(edit_1[k]) + ' --- ' + str(final_scores[k])
                     
