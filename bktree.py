@@ -153,7 +153,7 @@ class Pdist(dict):
         
         for letter1 in alphabet:
             for letter2 in alphabet:
-                if (letter1 + '|' + correction) in self:
+                if (letter1+letter2 + '|' + correction) in self:
                     count+= self[letter1+letter2 + '|' + correction]
         
         return count
@@ -176,7 +176,7 @@ def Pedit(edit):
     return p_spell_error*product(P1edit(e) for e in edit.split('+')) 
 
 p_spell_error1 = 1./20. 
-p_spell_error = 1
+p_spell_error = 1./20.
 
 P1edit = Pdist(datafile('count_1edit.txt')) ## Probabilities of single edits 
 

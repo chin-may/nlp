@@ -48,13 +48,13 @@ if __name__ == "__main__":
                 print "The most likely replacement for " + i + " is : " + str(max_candidate)
         
         if num == '2' or num == '3':
-            i = str(raw_input("Enter the sentence : "))
-            i = i.lower()
-            i = re.sub('[.,"<>?/\|{~`]', ' ', i)
+            sent = str(raw_input("Enter the sentence : "))
+            sent = sent.lower()
+            sent = str(re.sub('[.,"<>?/\|{~`]', ' ', sent))
             log_prob_ngrams = []
-            words = i.split()
+            words = sent.split()
             for j in xrange(len(words)):
-                word = words[j]
+                word = str(words[j])
                 edit_0 = [];
                 edit_1 = [];
                 edit_2 = [];
@@ -71,7 +71,7 @@ if __name__ == "__main__":
                             edit_1.append(pair[1])
                         else: 
                             edit_2.append(pair[1])
-                        ed = bktree.get_edits(i, pair[1])
+                        ed = bktree.get_edits(sent, pair[1])
                         score_edits.append(bktree.Pedit(ed))
 
                     score_post = ngram_pos.choose(' '.join(words[:j-1]), edit_1 ,' '.join(words[j+1:]),postagged)
@@ -83,7 +83,7 @@ if __name__ == "__main__":
                     for k in xrange(len(edit_1)):
                         final_scores.append(weight_post*log_score_post[k] +
                                 weight_ngrams*log_prob_ngrams[k] +
-                                math.log(score_edits[k]))
+                                0.05*math.log(score_edits[k]))
                         #print str(edit_1[k]) + ' --- ' + str(final_scores[k])
                     res=[(edit_1[i],final_scores[i]) for i in xrange(len(edit_1))]
                     res.sort(key=lambda par:-par[1])
