@@ -37,8 +37,11 @@ def choose(leftcont,confusion,rightcont,data):
     rightwords = word_tokenize(rightcont)
     loc = len(leftwords)
     scores = [1]*len(confusion)
+    sents = [leftwords + [candidate] + rightwords for candidate in confusion]
+    tagged_all = st.batch_tag(sents)
+
     for k in xrange(len(confusion)):
-        tagged = st.tag(leftwords+[confusion[k]]+rightwords)
+        tagged = tagged_all[k]
         sent = [tagged[i][1] for i in xrange(loc)] + [tagged[loc][0]] + \
             [tagged[i][1] for i in xrange(loc+1,len(tagged))]
         for j in xrange(len(sent)-2):
