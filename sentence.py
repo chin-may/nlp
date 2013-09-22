@@ -76,11 +76,11 @@ if __name__ == "__main__":
                     log_score_post = [math.log(score) for score in score_post]
                     log_prob_ngrams = [phrase.get_prior(' '.join(words[:j-1])+' '+ candidate + ' ' + ' '.join(words[j+1:])) for candidate in edit_1 ]
                     final_scores = []
-                    weight_post = 0.000005
-                    weight_ngrams = 0.5
+                    weight_post = 0#.00000005
+                    weight_ngrams = 1
                     for k in xrange(len(edit_1)):
                         final_scores.append(weight_post*log_score_post[k] +
                                 weight_ngrams*log_prob_ngrams[k] +
-                                math.log(score_edits[k]))
+                                0.1*math.log(score_edits[k]))
                         print str(edit_1[k]) + ' --- ' + str(final_scores[k])
                     

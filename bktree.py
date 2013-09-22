@@ -138,9 +138,25 @@ class Pdist(dict):
         self.N = float(N or sum(self.itervalues()))
         self.missingfn = missingfn or (lambda k, N: 1./N)
     def __call__(self, key): 
-        if key in self: return self[key]/self.N  
+        if key in self: return self[key]/float(get_count_all(key))  
         else: return self.missingfn(key, self.N)
-
+        
+def get_count_all(key):
+    splitted = key.split('|')
+    typo = splitted[0]
+    correction = splitted[1]
+    count = 0
+    alphabet = 'abcdefghijklmnopqrstuvwxyz'
+    for letter1 in alphabet:
+        count+= self[letter1 + '|' + correction]
+    
+    for letter1 in alphabet:
+        for letter2 in alphabet:
+            count+= self[letter1 + '|' + correction]
+    
+    return count
+    
+        
 def datafile(name, sep='\t'):
     "Read key,value pairs from file."
     for line in file(name):
