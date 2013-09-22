@@ -73,7 +73,7 @@ if __name__ == "__main__":
                             edit_2.append(pair[1])
                         ed = bktree.get_edits(i, pair[1])
                         score_edits.append(bktree.Pedit(ed))
-                        
+
                     score_post = ngram_pos.choose(' '.join(words[:j-1]), edit_1 ,' '.join(words[j+1:]),postagged)
                     log_score_post = [math.log(score) for score in score_post]
                     log_prob_ngrams = [phrase.get_prior(' '.join(words[:j-1])+' '+ candidate + ' ' + ' '.join(words[j+1:])) for candidate in edit_1 ]
@@ -84,5 +84,7 @@ if __name__ == "__main__":
                         final_scores.append(weight_post*log_score_post[k] +
                                 weight_ngrams*log_prob_ngrams[k] +
                                 math.log(score_edits[k]))
-                        print str(edit_1[k]) + ' --- ' + str(final_scores[k])
-                    
+                        #print str(edit_1[k]) + ' --- ' + str(final_scores[k])
+                    res=[(edit_1[i],final_scores[i]) for i in xrange(len(edit_1))]
+                    res.sort(key=lambda par:-par[1])
+                    print res
