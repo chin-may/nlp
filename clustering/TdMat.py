@@ -2,10 +2,16 @@ import textmining
 from nltk.corpus import brown
 import nltk.data
 import nltk
+from nltk import stem
 from pprint import pprint
+from nltk import word_tokenize
+from nltk.corpus import stopwords
+
 
 sent_tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
 tdm = textmining.TermDocumentMatrix()
+pors = stem.PorterStemmer()
+stoplist = stopwords.words('english')
 
 
 def print_tdm():
@@ -32,8 +38,11 @@ def process_sample(sample):
     temp_str = ' '.join(words_in_sample)
 
     sentences = sent_tokenizer.tokenize(temp_str)
-    return  chunks(sentences,K)
+    return  chunks([stem_sent(sent) for sent in sentences],K)
 
+def stem_sent(sent):
+    return ' '.join([pors.stem(word) for word in word_tokenize(sent) if word
+        not in stoplist])
 
 def split(fname,numrows):
     f=open(fname)
