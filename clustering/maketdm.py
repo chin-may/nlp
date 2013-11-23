@@ -1,4 +1,5 @@
 import TdMat
+reload(TdMat)
 from nltk.corpus import brown
 
 for f in brown.fileids():
