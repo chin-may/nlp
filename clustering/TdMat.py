@@ -57,7 +57,7 @@ def split(fname,numrows):
             i=0
             print j
             j+=1
-        wf.write(line+'\n')
+        wf.write(line)
         i+=1
     wf.close()
 
